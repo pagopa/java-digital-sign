@@ -8,7 +8,7 @@
 # Requirements
 The latest version of `java-digital-sign` has the following minimal requirements:
 
--   Java 11 and higher (tested up to Java 17) for the build is required. 
+-   Java 11 and higher (tested up to Java 17) for the build is required.
 -   Maven 3.6 and higher;
 -   Memory and Disk: see minimal requirements for the used JVM. In general the higher available is better;
 -   Operating system: no specific requirements (tested on Windows and Linux).
@@ -35,4 +35,31 @@ mvn checkstyle:check
 to compile the JAR with all dependencies:
 ```
 mvn compile exec:java
+```
+
+## Usage
+
+Generate a PAdES PDF with a signature placeholder
+```java
+File inputFile = new File("input.pdf");
+File outputFile = new File("pades.pdf");
+String fieldId = "SignatureFieldId";
+
+FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+SignatureServiceInterface serviceInterface = SignatureService.getInterface();
+
+serviceInterface.generatePadesFile(inputFile, fileOutputStream, fieldId);
+```
+
+Put a signatureValue in a PAdES PDF
+```java
+File inputFile = new File("pades.pdf");
+File outputFile = new File("signed.pdf");
+String fieldId = "SignatureFieldId";
+byte[] signatureValue = [.....];
+
+FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+SignatureServiceInterface serviceInterface = SignatureService.getInterface();
+
+serviceInterface.addSignatureToPadesFile(inputFile, fileOutputStream, fieldId, signatureValue);
 ```
