@@ -111,13 +111,12 @@ class SignatureServiceImpl implements SignatureServiceInterface {
 
     /*
      * The value of the signature must be inserted in place of the placeholder present in the PAdES PDF.
-     * The starting byte of the placeholder is identified by range.getFirstPartEnd ()
+     * The starting byte of the placeholder is identified by range.getFirstPartEnd()
      */
+    int offset = range.getFirstPartEnd();
     while ((ch = inputBuffer.read()) != -1) {
-      if (
-        i > range.getFirstPartEnd() && i <= range.getFirstPartEnd() + signatureHex.length
-      ) {
-        ch = signatureHex[i - range.getFirstPartEnd() - 1];
+      if (i > offset && i <= offset + signatureHex.length) {
+        ch = signatureHex[i - offset - 1];
       }
       outBuffer.write(ch);
       i += 1;
