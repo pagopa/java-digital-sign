@@ -34,9 +34,12 @@ final class Utility {
       if (Utils.isCollectionNotEmpty(pdSignatureFields)) {
         for (PDSignatureField signatureField : pdSignatureFields) {
           if (signatureField.getFullyQualifiedName().equalsIgnoreCase(signatureFieldId)) {
-            COSObject sigDictObject = signatureField.getCOSObject().getCOSObject(COSName.V);
+            COSObject sigDictObject = signatureField
+              .getCOSObject()
+              .getCOSObject(COSName.V);
             if (
-              sigDictObject == null || !(sigDictObject.getObject() instanceof COSDictionary)
+              sigDictObject == null ||
+              !(sigDictObject.getObject() instanceof COSDictionary)
             ) {
               LOG.warn("Skip field '%s'", signatureField.getFullyQualifiedName());
               continue;
@@ -46,7 +49,9 @@ final class Utility {
               (COSDictionary) sigDictObject.getObject(),
               pdDocument
             );
-            PdfArray byteRangeArray = dictionary.getAsArray(PAdESConstants.BYTE_RANGE_NAME);
+            PdfArray byteRangeArray = dictionary.getAsArray(
+              PAdESConstants.BYTE_RANGE_NAME
+            );
 
             if (byteRangeArray == null) {
               LOG.error(
@@ -81,7 +86,9 @@ final class Utility {
       }
     } catch (InvalidPasswordException e) {
       LOG.error("This file is protected by password!");
-      throw new SignatureServiceException(String.format("This file is protected by password!"));
+      throw new SignatureServiceException(
+        String.format("This file is protected by password!")
+      );
     }
   }
 }
