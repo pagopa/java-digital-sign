@@ -5,7 +5,8 @@ name: Code Review Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches-ignore:
+      - main
   pull_request:
     branches: [ "main" ]
 
@@ -29,7 +30,7 @@ jobs:
 
     - name: Prettier check
       run: mvn -B verify prettier:check
-      
+
     - name: Checkstyle
       run: mvn -B verify checkstyle:checkstyle
     - uses: jwgmeligmeyling/checkstyle-github-action@master
