@@ -75,7 +75,9 @@ class PdfBoxArray implements PdfArray {
       );
     }
     try (InputStream is = cosStream.createInputStream()) {
-      return DSSUtils.toByteArray(is);
+      byte[] result = DSSUtils.toByteArray(is);
+      cosStream.close();
+      return result;
     }
   }
 
