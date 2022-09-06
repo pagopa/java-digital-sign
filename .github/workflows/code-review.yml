@@ -5,10 +5,10 @@ name: Code Review Pipeline
 
 on:
   push:
+    branches: [ "main" ]
+  pull_request:
     branches-ignore:
       - main
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
