@@ -11,8 +11,10 @@ public interface SignatureServiceInterface {
    * @param originalPdf pdf file to which to add the PAdES structure
    * @param outputStream outputstream on which to write the PDF file with the added PAdES structure
    * @throws IOException
+   * @throws SignatureServiceException
    */
-  void generatePadesFile(File originalPdf, OutputStream outputStream) throws IOException;
+  void generatePadesFile(File originalPdf, OutputStream outputStream)
+    throws IOException, SignatureServiceException;
 
   /**
    * Add a PAdES structure to an input PDF and save it in an outputStream
@@ -20,12 +22,13 @@ public interface SignatureServiceInterface {
    * @param outputStream outputstream on which to write the PDF file with the added PAdES structure
    * @param signatureFieldId id of the signature field present on the PDF file
    * @throws IOException
+   * @throws SignatureServiceException
    */
   void generatePadesFile(
     File originalPdf,
     OutputStream outputStream,
     String signatureFieldId
-  ) throws IOException;
+  ) throws IOException, SignatureServiceException;
 
   /**
    * Add a PAdES structure to an input PDF and save it in an outputStream
@@ -34,13 +37,14 @@ public interface SignatureServiceInterface {
    * @param signatureFieldId id of the signature field present on the PDF file
    * @param signatureText text to add to the signature field
    * @throws IOException
+   * @throws SignatureServiceException
    */
   void generatePadesFile(
     File originalPdf,
     OutputStream outputStream,
     String signatureFieldId,
     String signatureText
-  ) throws IOException;
+  ) throws IOException, SignatureServiceException;
 
   /**
    * Adds a signed hash to a PAdES format file and saves it in an outputStream given in input
@@ -50,6 +54,7 @@ public interface SignatureServiceInterface {
    * @param signatureValue byte array of the signature
    * @param signatureHexEncoded true if signatureValue is already Hex encoded
    * @throws IOException
+   * @throws SignatureServiceException
    */
   void addSignatureToPadesFile(
     File padesPdf,
