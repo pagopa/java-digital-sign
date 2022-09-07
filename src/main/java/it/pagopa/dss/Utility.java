@@ -25,9 +25,22 @@ final class Utility {
 
   private static final Logger LOG = LoggerFactory.getLogger(Utility.class);
 
-  static ByteRange getByteRange(DSSDocument documentToSign, String signatureFieldId)
+  /**
+   * Given a PAdES document and a signatureFieldId, this function first checks if the PAdES structure
+   * for that particular signatureFieldId is present and then returns the associated ByteRange.
+   *
+   * The ByteRange inside a PAdES PDF defines the starting byte of the PDF, the number of bytes before the signature,
+   * the end byte of the signature and the number of bytes remaining until the end of the file.
+   * ByteRange is used also for digest computation.
+   *
+   * @param padesPDF PAdES PDF with signature
+   * @param signatureFieldId id of the signature field present on the PDF file
+   * @return SignatureServiceInterface
+   *
+   */
+  static ByteRange getByteRange(DSSDocument padesPDF, String signatureFieldId)
     throws IOException, SignatureServiceException {
-    try (PdfBoxDocumentReader reader = new PdfBoxDocumentReader(documentToSign)) {
+    try (PdfBoxDocumentReader reader = new PdfBoxDocumentReader(padesPDF)) {
       PDDocument pdDocument = reader.getPDDocument();
       List<PDSignatureField> pdSignatureFields = pdDocument.getSignatureFields();
 

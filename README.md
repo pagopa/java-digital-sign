@@ -34,7 +34,7 @@ mvn checkstyle:check
 
 to compile the JAR with all dependencies:
 ```
-mvn compile exec:java
+mvn clean compile assembly:single
 ```
 
 ## Usage
