@@ -28,16 +28,16 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Prettier check
-      run: mvn -B verify prettier:check
+      run: mvn prettier:check
 
     - name: Checkstyle
-      run: mvn -B verify checkstyle:checkstyle
+      run: mvn checkstyle:checkstyle
     - uses: jwgmeligmeyling/checkstyle-github-action@a12be500c097a5cedab881d4785ef9b4a4d3ee6a
       with:
         path: '**/checkstyle-result.xml'
 
     - name: Test
-      run: mvn -B verify test
+      run: mvn test
     - uses: madrapps/jacoco-report@v1.2
       with:
         paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml

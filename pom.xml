@@ -185,6 +185,12 @@
                 </goals>
             </execution>
         </executions>
+        <configuration>
+          <excludes>
+              <exclude>it.pagopa.dss.PdfBoxDict*</exclude>
+              <exclude>it.pagopa.dss.PdfBoxArray*</exclude>
+          </excludes>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>

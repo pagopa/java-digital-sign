@@ -21,47 +21,45 @@ class SignatureServiceTest {
 
   @Test
   public void assertByteRange() throws Exception {
-      Path tempFile = Files.createTempFile(null, null);
-      FileOutputStream fos = new FileOutputStream(tempFile.toFile());
-      serviceInterface.generatePadesFile(new File(testFileName), fos, testFieldId);
+    Path tempFile = Files.createTempFile(null, null);
+    FileOutputStream fos = new FileOutputStream(tempFile.toFile());
+    serviceInterface.generatePadesFile(new File(testFileName), fos, testFieldId);
 
-      DSSDocument documentToSign = new FileDocument(tempFile.toFile());
-      ByteRange range = Utility.getByteRange(documentToSign, testFieldId);
+    DSSDocument documentToSign = new FileDocument(tempFile.toFile());
+    ByteRange range = Utility.getByteRange(documentToSign, testFieldId);
 
-      assertThat(range.getFirstPartEnd()).isEqualTo(7622);
-      assertThat(range.getSecondPartStart()).isEqualTo(26568);
+    assertThat(range.getFirstPartEnd()).isEqualTo(7622);
+    assertThat(range.getSecondPartStart()).isEqualTo(26568);
   }
 
   @Test
   public void assertSignature() throws Exception {
-      byte[] signatureValue = Hex
-        .encodeHexString("INVALIDSIGNATURE".getBytes())
-        .getBytes();
+    byte[] signatureValue = Hex.encodeHexString("INVALIDSIGNATURE".getBytes()).getBytes();
 
-      Path tempPadesFile = Files.createTempFile(null, null);
-      FileOutputStream fosPades = new FileOutputStream(tempPadesFile.toFile());
-      serviceInterface.generatePadesFile(new File(testFileName), fosPades, testFieldId);
+    Path tempPadesFile = Files.createTempFile(null, null);
+    FileOutputStream fosPades = new FileOutputStream(tempPadesFile.toFile());
+    serviceInterface.generatePadesFile(new File(testFileName), fosPades, testFieldId);
 
-      Path tempSignedFile = Files.createTempFile(null, null);
-      FileOutputStream fosSigned = new FileOutputStream(tempSignedFile.toFile());
+    Path tempSignedFile = Files.createTempFile(null, null);
+    FileOutputStream fosSigned = new FileOutputStream(tempSignedFile.toFile());
 
-      serviceInterface.addSignatureToPadesFile(
-        tempPadesFile.toFile(),
-        fosSigned,
-        testFieldId,
-        signatureValue,
-        true
-      );
+    serviceInterface.addSignatureToPadesFile(
+      tempPadesFile.toFile(),
+      fosSigned,
+      testFieldId,
+      signatureValue,
+      true
+    );
 
-      DSSDocument signedDocument = new FileDocument(tempSignedFile.toFile());
-      ByteRange range = Utility.getByteRange(signedDocument, testFieldId);
+    DSSDocument signedDocument = new FileDocument(tempSignedFile.toFile());
+    ByteRange range = Utility.getByteRange(signedDocument, testFieldId);
 
-      byte[] signedByte = Arrays.copyOfRange(
-        Files.readAllBytes(tempSignedFile),
-        range.getFirstPartEnd() + 1,
-        range.getFirstPartEnd() + signatureValue.length + 1
-      );
+    byte[] signedByte = Arrays.copyOfRange(
+      Files.readAllBytes(tempSignedFile),
+      range.getFirstPartEnd() + 1,
+      range.getFirstPartEnd() + signatureValue.length + 1
+    );
 
-      assertThat(signedByte).isEqualTo(signatureValue);
+    assertThat(signedByte).isEqualTo(signatureValue);
   }
 }
