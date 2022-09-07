@@ -10,7 +10,6 @@ public interface SignatureServiceInterface {
    * Add a PAdES structure to an input PDF and save it in an outputStream
    * @param originalPdf pdf file to which to add the PAdES structure
    * @param outputStream outputstream on which to write the PDF file with the added PAdES structure
-   * @return void
    * @throws IOException
    */
   void generatePadesFile(File originalPdf, OutputStream outputStream) throws IOException;
@@ -20,7 +19,6 @@ public interface SignatureServiceInterface {
    * @param originalPdf pdf file to which to add the PAdES structure
    * @param outputStream outputstream on which to write the PDF file with the added PAdES structure
    * @param signatureFieldId id of the signature field present on the PDF file
-   * @return void
    * @throws IOException
    */
   void generatePadesFile(
@@ -35,7 +33,6 @@ public interface SignatureServiceInterface {
    * @param outputStream outputstream on which to write the PDF file with the added PAdES structure
    * @param signatureFieldId id of the signature field present on the PDF file
    * @param signatureText text to add to the signature field
-   * @return void
    * @throws IOException
    */
   void generatePadesFile(
@@ -51,7 +48,6 @@ public interface SignatureServiceInterface {
    * @param outputStream outputstream on which to write the PDF signed
    * @param signatureFieldId id of the signature field present on the PDF file
    * @param signatureValue byte array of the signature
-   * @return void
    * @throws IOException
    */
   void addSignatureToPadesFile(
