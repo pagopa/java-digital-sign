@@ -20,8 +20,7 @@ class SignatureServiceTest {
   private final String testFieldId = "Signature1";
 
   @Test
-  public void assertByteRange() {
-    try {
+  public void assertByteRange() throws Exception {
       Path tempFile = Files.createTempFile(null, null);
       FileOutputStream fos = new FileOutputStream(tempFile.toFile());
       serviceInterface.generatePadesFile(new File(testFileName), fos, testFieldId);
@@ -31,14 +30,10 @@ class SignatureServiceTest {
 
       assertThat(range.getFirstPartEnd()).isEqualTo(7622);
       assertThat(range.getSecondPartStart()).isEqualTo(26568);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   @Test
-  public void assertSignature() {
-    try {
+  public void assertSignature() throws Exception {
       byte[] signatureValue = Hex
         .encodeHexString("INVALIDSIGNATURE".getBytes())
         .getBytes();
@@ -68,8 +63,5 @@ class SignatureServiceTest {
       );
 
       assertThat(signedByte).isEqualTo(signatureValue);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 }
