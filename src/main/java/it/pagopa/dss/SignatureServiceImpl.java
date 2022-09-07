@@ -95,12 +95,18 @@ class SignatureServiceImpl implements SignatureServiceInterface {
     File padesPdf,
     OutputStream outputStream,
     String signatureFieldId,
-    byte[] signatureValue
+    byte[] signatureValue,
+    boolean signatureHexEncoded
   ) throws IOException, SignatureServiceException {
     DSSDocument documentToSign = new FileDocument(padesPdf);
     ByteRange range = Utility.getByteRange(documentToSign, signatureFieldId);
 
-    byte[] signatureHex = Hex.encodeHexString(signatureValue).getBytes();
+    byte[] signatureHex = signatureValue;
+
+    if (!signatureHexEncoded) {
+      signatureHex = Hex.encodeHexString(signatureValue).getBytes();
+    }
+
     BufferedInputStream inputBuffer = new BufferedInputStream(
       documentToSign.openStream()
     );

@@ -48,12 +48,14 @@ public interface SignatureServiceInterface {
    * @param outputStream outputstream on which to write the PDF signed
    * @param signatureFieldId id of the signature field present on the PDF file
    * @param signatureValue byte array of the signature
+   * @param signatureHexEncoded true if signatureValue is already Hex encoded
    * @throws IOException
    */
   void addSignatureToPadesFile(
     File padesPdf,
     OutputStream outputStream,
     String signatureFieldId,
-    byte[] signatureValue
+    byte[] signatureValue,
+    boolean signatureHexEncoded
   ) throws IOException, SignatureServiceException;
 }

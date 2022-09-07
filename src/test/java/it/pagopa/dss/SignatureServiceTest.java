@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 
 class SignatureServiceTest {
@@ -29,6 +31,43 @@ class SignatureServiceTest {
 
       assertThat(range.getFirstPartEnd()).isEqualTo(7622);
       assertThat(range.getSecondPartStart()).isEqualTo(26568);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void assertSignature() {
+    try {
+      byte[] signatureValue = Hex
+        .encodeHexString("INVALIDSIGNATURE".getBytes())
+        .getBytes();
+
+      Path tempPadesFile = Files.createTempFile(null, null);
+      FileOutputStream fosPades = new FileOutputStream(tempPadesFile.toFile());
+      serviceInterface.generatePadesFile(new File(testFileName), fosPades, testFieldId);
+
+      Path tempSignedFile = Files.createTempFile(null, null);
+      FileOutputStream fosSigned = new FileOutputStream(tempSignedFile.toFile());
+
+      serviceInterface.addSignatureToPadesFile(
+        tempPadesFile.toFile(),
+        fosSigned,
+        testFieldId,
+        signatureValue,
+        true
+      );
+
+      DSSDocument signedDocument = new FileDocument(tempSignedFile.toFile());
+      ByteRange range = Utility.getByteRange(signedDocument, testFieldId);
+
+      byte[] signedByte = Arrays.copyOfRange(
+        Files.readAllBytes(tempSignedFile),
+        range.getFirstPartEnd() + 1,
+        range.getFirstPartEnd() + signatureValue.length + 1
+      );
+
+      assertThat(signedByte).isEqualTo(signatureValue);
     } catch (Exception e) {
       e.printStackTrace();
     }
