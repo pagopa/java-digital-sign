@@ -60,7 +60,6 @@ class SignatureServiceImpl implements SignatureServiceInterface {
     parameters.setDigestAlgorithm(DigestAlgorithm.SHA256);
     parameters.setGenerateTBSWithoutCertificate(true);
 
-    //initialization of PAdES signature service on a PDF object
     IPdfObjFactory pdfObjFactory = new ServiceLoaderPdfObjFactory();
     PDFSignatureService pdfSignatureService = pdfObjFactory.newPAdESSignatureService();
 
