@@ -58,6 +58,12 @@ class SignatureServiceImpl implements SignatureServiceInterface {
     //initialization of PAdES parameters
     PAdESSignatureParameters parameters = new PAdESSignatureParameters();
     parameters.setDigestAlgorithm(DigestAlgorithm.SHA256);
+
+    /*
+     * there is a need to set it to true as in a first phase of creation of the PAdES
+     * a padding will be used for the signature therefore also the certificate will not be valid.
+     * If set to true the signature will be successful even with an invalid certificate
+     */
     parameters.setGenerateTBSWithoutCertificate(true);
 
     IPdfObjFactory pdfObjFactory = new ServiceLoaderPdfObjFactory();
