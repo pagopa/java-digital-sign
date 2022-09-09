@@ -70,7 +70,6 @@ class SignatureServiceImpl implements SignatureServiceInterface {
     PDFSignatureService pdfSignatureService = pdfObjFactory.newPAdESSignatureService();
 
     if (signatureFieldId != null) {
-      //initialization of the parameters to set the signature field to be used
       SignatureImageParameters imageParameters = new SignatureImageParameters();
       SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
 
