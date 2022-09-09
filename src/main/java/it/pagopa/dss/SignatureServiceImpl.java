@@ -51,16 +51,21 @@ class SignatureServiceImpl implements SignatureServiceInterface {
     String signatureFieldId,
     String signatureText
   ) throws IOException {
+
+    //converting the file into a DSS document (from dss library)
     DSSDocument documentToSign = new FileDocument(originalPdf);
 
+    //initialization of PAdES parameters
     PAdESSignatureParameters parameters = new PAdESSignatureParameters();
     parameters.setDigestAlgorithm(DigestAlgorithm.SHA256);
     parameters.setGenerateTBSWithoutCertificate(true);
 
+    //initialization of PAdES signature service on a PDF object
     IPdfObjFactory pdfObjFactory = new ServiceLoaderPdfObjFactory();
     PDFSignatureService pdfSignatureService = pdfObjFactory.newPAdESSignatureService();
 
     if (signatureFieldId != null) {
+      //initialization of the parameters to set the signature field to be used
       SignatureImageParameters imageParameters = new SignatureImageParameters();
       SignatureFieldParameters fieldParameters = new SignatureFieldParameters();
 
@@ -68,6 +73,7 @@ class SignatureServiceImpl implements SignatureServiceInterface {
       imageParameters.setFieldParameters(fieldParameters);
 
       if (signatureText != null) {
+        //set the text to be added in the signature field with its font
         SignatureImageTextParameters textParameters = new SignatureImageTextParameters();
         PdfBoxNativeFont font = new PdfBoxNativeFont(PDType1Font.HELVETICA);
         font.setSize(DEFAULT_FONT_SIZE);
@@ -81,6 +87,7 @@ class SignatureServiceImpl implements SignatureServiceInterface {
       LOG.warn("signatureFieldId is null, new field created!");
     }
 
+    //the PAdES PDF that is generated initially has a signature consisting of all 0's which is used as a placeholder
     final byte[] emptySignatureValue = DSSUtils.EMPTY_BYTE_ARRAY;
     DSSDocument noSign = pdfSignatureService.sign(
       documentToSign,
@@ -103,6 +110,10 @@ class SignatureServiceImpl implements SignatureServiceInterface {
 
     byte[] signatureHex = signatureValue;
 
+    /*
+     * The signature in order to be inserted inside a PAdES PDF must be HEX encoded.
+     * ETSI EN 319 142-1
+     */
     if (!signatureHexEncoded) {
       signatureHex = Hex.encodeHexString(signatureValue).getBytes();
     }
